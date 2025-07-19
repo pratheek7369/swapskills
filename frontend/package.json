@@ -12,7 +12,12 @@
     "react-scripts": "5.0.1",
     "axios": "^1.4.0",
     "jwt-decode": "^3.1.2",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "react-icons": "^4.10.1",
+    "framer-motion": "^10.16.4",
+    "react-hot-toast": "^2.4.1",
+    "simple-peer": "^9.11.1",
+    "socket.io-client": "^4.7.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -43,5 +48,5 @@
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.24"
   },
-  "proxy": "https://your-railway-app.railway.app"
+  "proxy": "https://swapskills-backend.onrender.com"
 } 
