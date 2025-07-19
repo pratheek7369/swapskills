@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # SkillSwap - Learn and Teach Skills Platform
 
 A full-stack web application that connects people who want to learn skills with those who can teach them. Built with React, Node.js, Express, and MongoDB.
@@ -120,3 +121,6 @@ This project is licensed under the MIT License.
 ## Live Demo
 
 [Your deployed application URL will go here] 
+=======
+# swapskills
+>>>>>>> bb16f2e61eea63a4386fe1deee845ddb8d42d67c

@@ -2,7 +2,6 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
-const path = require('path');
 
 // Load environment variables
 dotenv.config();
@@ -36,14 +35,8 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'SkillSwap API is running' });
 });
 
-// Serve static files in production
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../frontend/build')));
-  
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
-  });
-}
+// Note: Frontend is deployed separately to Vercel
+// No static file serving needed in backend
 
 // Error handling middleware
 app.use((err, req, res, next) => {
