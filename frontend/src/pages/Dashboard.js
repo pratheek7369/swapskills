@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
+import config from '../config';
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -19,8 +20,8 @@ const Dashboard = () => {
   const fetchSkills = async () => {
     try {
       const [teachResponse, learnResponse] = await Promise.all([
-        axios.get('/api/skills/teach'),
-        axios.get('/api/skills/learn')
+        axios.get(`${config.API_URL}/api/skills/teach`),
+        axios.get(`${config.API_URL}/api/skills/learn`)
       ]);
       setTeachSkills(teachResponse.data);
       setLearnSkills(learnResponse.data);
@@ -36,7 +37,7 @@ const Dashboard = () => {
     if (!newTeachSkill.trim()) return;
 
     try {
-      const response = await axios.post('/api/skills/teach', { skill: newTeachSkill });
+      const response = await axios.post(`${config.API_URL}/api/skills/teach`, { skill: newTeachSkill });
       setTeachSkills([...teachSkills, response.data]);
       setNewTeachSkill('');
     } catch (error) {
@@ -49,7 +50,7 @@ const Dashboard = () => {
     if (!newLearnSkill.trim()) return;
 
     try {
-      const response = await axios.post('/api/skills/learn', { skill: newLearnSkill });
+      const response = await axios.post(`${config.API_URL}/api/skills/learn`, { skill: newLearnSkill });
       setLearnSkills([...learnSkills, response.data]);
       setNewLearnSkill('');
     } catch (error) {
@@ -59,7 +60,7 @@ const Dashboard = () => {
 
   const removeTeachSkill = async (skillId) => {
     try {
-      await axios.delete(`/api/skills/teach/${skillId}`);
+      await axios.delete(`${config.API_URL}/api/skills/teach/${skillId}`);
       setTeachSkills(teachSkills.filter(skill => skill._id !== skillId));
     } catch (error) {
       setError('Failed to remove teach skill');
@@ -68,7 +69,7 @@ const Dashboard = () => {
 
   const removeLearnSkill = async (skillId) => {
     try {
-      await axios.delete(`/api/skills/learn/${skillId}`);
+      await axios.delete(`${config.API_URL}/api/skills/learn/${skillId}`);
       setLearnSkills(learnSkills.filter(skill => skill._id !== skillId));
     } catch (error) {
       setError('Failed to remove learn skill');

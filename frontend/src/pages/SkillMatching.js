@@ -3,6 +3,7 @@ import axios from 'axios';
 import { motion } from 'framer-motion';
 import { FaVideo, FaEnvelope, FaUser, FaStar, FaGraduationCap, FaChalkboardTeacher, FaUsers } from 'react-icons/fa';
 import VideoCallModal from '../components/VideoCallModal';
+import config from '../config';
 
 const SkillMatching = () => {
   const [matches, setMatches] = useState([]);
@@ -16,7 +17,7 @@ const SkillMatching = () => {
 
   const fetchMatches = async () => {
     try {
-      const response = await axios.get('/api/skills/matches');
+      const response = await axios.get(`${config.API_URL}/api/skills/matches`);
       setMatches(response.data);
     } catch (error) {
       setError('Failed to fetch matches');
