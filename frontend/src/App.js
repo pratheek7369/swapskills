@@ -7,6 +7,7 @@ import SignUp from './pages/SignUp';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import SkillMatching from './pages/SkillMatching';
+import DebugInfo from './components/DebugInfo';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -43,6 +44,7 @@ function App() {
               />
             </Routes>
           </main>
+          {process.env.NODE_ENV === 'development' && <DebugInfo />}
         </div>
       </Router>
     </AuthProvider>
