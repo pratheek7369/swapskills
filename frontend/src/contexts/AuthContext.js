@@ -43,7 +43,8 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post(`${config.API_URL}/api/auth/login`, { email, password });
+      console.log('Attempting login with API URL:', config.getApiUrl());
+      const response = await axios.post(`${config.getApiUrl()}/api/auth/login`, { email, password });
       const { token, user } = response.data;
       
       localStorage.setItem('token', token);
@@ -53,16 +54,19 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
       return { success: true };
     } catch (error) {
+      console.error('Login error:', error);
+      console.error('Error response:', error.response);
       return { 
         success: false, 
-        error: error.response?.data?.message || 'Login failed' 
+        error: error.response?.data?.message || error.message || 'Login failed' 
       };
     }
   };
 
   const signup = async (userData) => {
     try {
-      const response = await axios.post(`${config.API_URL}/api/auth/signup`, userData);
+      console.log('Attempting signup with API URL:', config.getApiUrl());
+      const response = await axios.post(`${config.getApiUrl()}/api/auth/signup`, userData);
       const { token, user } = response.data;
       
       localStorage.setItem('token', token);
@@ -72,9 +76,11 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
       return { success: true };
     } catch (error) {
+      console.error('Signup error:', error);
+      console.error('Error response:', error.response);
       return { 
         success: false, 
-        error: error.response?.data?.message || 'Signup failed' 
+        error: error.response?.data?.message || error.message || 'Signup failed' 
       };
     }
   };
