@@ -83,7 +83,9 @@ app.get('/api/env-check', (req, res) => {
     jwt_secret_set: !!process.env.JWT_SECRET,
     node_env: process.env.NODE_ENV,
     port: process.env.PORT,
-    database_connected: mongoose.connection.readyState === 1
+    database_connected: mongoose.connection.readyState === 1,
+    mongodb_uri_preview: process.env.MONGODB_URI ? 
+      process.env.MONGODB_URI.substring(0, 50) + '...' : 'Not set'
   });
 });
 
