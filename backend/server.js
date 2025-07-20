@@ -39,12 +39,22 @@ app.use(express.urlencoded({ extended: true }));
 
 // Connect to MongoDB
 const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://pratheek13acharya:MOWOipiuNmcbi7Dx@cluster0.op8jefe.mongodb.net/skillswap?retryWrites=true&w=majority&appName=Cluster0';
+
+console.log('Attempting to connect to MongoDB...');
+console.log('MongoDB URI:', mongoUri ? 'Set' : 'Not set');
+
 mongoose.connect(mongoUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
-.then(() => console.log('Connected to MongoDB'))
-.catch(err => console.error('MongoDB connection error:', err));
+.then(() => {
+  console.log('✅ Connected to MongoDB successfully');
+  console.log('Database:', mongoose.connection.name);
+})
+.catch(err => {
+  console.error('❌ MongoDB connection error:', err);
+  console.error('Please check your MONGODB_URI environment variable');
+});
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -63,6 +73,17 @@ app.post('/api/test', (req, res) => {
     message: 'Test endpoint working',
     receivedData: req.body,
     timestamp: new Date().toISOString()
+  });
+});
+
+// Environment check endpoint (for debugging)
+app.get('/api/env-check', (req, res) => {
+  res.json({
+    mongodb_uri_set: !!process.env.MONGODB_URI,
+    jwt_secret_set: !!process.env.JWT_SECRET,
+    node_env: process.env.NODE_ENV,
+    port: process.env.PORT,
+    database_connected: mongoose.connection.readyState === 1
   });
 });
 

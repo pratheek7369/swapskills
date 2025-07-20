@@ -62,6 +62,7 @@ const signup = async (req, res) => {
     });
   } catch (error) {
     console.error('Signup error:', error);
+    console.error('Error stack:', error.stack);
     
     // Handle specific MongoDB errors
     if (error.code === 11000) {
@@ -73,7 +74,13 @@ const signup = async (req, res) => {
       return res.status(400).json({ message: messages[0] });
     }
     
-    res.status(500).json({ message: 'Server error' });
+    // Check if it's a database connection error
+    if (error.name === 'MongoNetworkError' || error.name === 'MongoServerSelectionError') {
+      console.error('Database connection error detected');
+      return res.status(500).json({ message: 'Database connection error' });
+    }
+    
+    res.status(500).json({ message: 'Server error', details: error.message });
   }
 };
 
