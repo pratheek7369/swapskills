@@ -16,12 +16,20 @@ const generateToken = (userId) => {
 // @access  Public
 const signup = async (req, res) => {
   try {
+    console.log('Signup request received:', { body: req.body, headers: req.headers });
+    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log('Validation errors:', errors.array());
       return res.status(400).json({ message: errors.array()[0].msg });
     }
 
     const { name, email, password } = req.body;
+
+    // Validate required fields
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -41,6 +49,8 @@ const signup = async (req, res) => {
     // Generate token
     const token = generateToken(user._id);
 
+    console.log('User created successfully:', user._id);
+
     res.status(201).json({
       message: 'User created successfully',
       token,
@@ -52,6 +62,17 @@ const signup = async (req, res) => {
     });
   } catch (error) {
     console.error('Signup error:', error);
+    
+    // Handle specific MongoDB errors
+    if (error.code === 11000) {
+      return res.status(400).json({ message: 'User already exists' });
+    }
+    
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map(err => err.message);
+      return res.status(400).json({ message: messages[0] });
+    }
+    
     res.status(500).json({ message: 'Server error' });
   }
 };
