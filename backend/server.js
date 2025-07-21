@@ -14,24 +14,10 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    const allowedOrigins = [
-      'http://localhost:3000', 
-      'https://swapskills.vercel.app', 
-      'https://swapskills-frontend.vercel.app',
-      'https://skillswap-frontend.vercel.app',
-      'https://skillswap.vercel.app'
-    ];
-    
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: [
+    'http://localhost:3000',
+    'https://swapskills-zeta.vercel.app'
+  ],
   credentials: true
 }));
 app.use(express.json());
