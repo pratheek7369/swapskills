@@ -43,9 +43,9 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const apiUrl = 'https://swapskills-backend.onrender.com';
+      const apiUrl = config.API_URL;
       console.log('Attempting login with API URL:', apiUrl);
-      const response = await axios.post(`${apiUrl}/api/auth/login`, { email, password });
+      const response = await axios.post(`${apiUrl}/auth/login`, { email, password });
       const { token, user } = response.data;
       
       localStorage.setItem('token', token);
@@ -66,9 +66,9 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (userData) => {
     try {
-      const apiUrl = 'https://swapskills-backend.onrender.com';
+      const apiUrl = config.API_URL;
       console.log('Attempting signup with API URL:', apiUrl);
-      const response = await axios.post(`${apiUrl}/api/auth/signup`, userData);
+      const response = await axios.post(`${apiUrl}/auth/signup`, userData);
       const { token, user } = response.data;
       
       localStorage.setItem('token', token);
