@@ -17,10 +17,11 @@ const SkillMatching = () => {
 
   const fetchMatches = async () => {
     try {
-      const response = await axios.get(`${config.API_URL}/api/skills/matches`);
+      const response = await axios.get(`${config.API_URL}/skills/matches`);
       setMatches(response.data);
     } catch (error) {
       setError('Failed to fetch matches');
+      console.error('Fetch matches error:', error.response?.data || error.message);
     } finally {
       setLoading(false);
     }
