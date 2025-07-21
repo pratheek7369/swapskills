@@ -4,6 +4,12 @@ import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
 import config from '../config';
 
+// Ensure JWT token is set for all axios requests
+const token = localStorage.getItem('token');
+if (token) {
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+}
+
 const Dashboard = () => {
   const { user } = useAuth();
   const [teachSkills, setTeachSkills] = useState([]);
@@ -20,8 +26,8 @@ const Dashboard = () => {
   const fetchSkills = async () => {
     try {
       const [teachResponse, learnResponse] = await Promise.all([
-        axios.get(`${config.API_URL}/api/skills/teach`),
-        axios.get(`${config.API_URL}/api/skills/learn`)
+        axios.get(`${config.API_URL}/skills/teach`),
+        axios.get(`${config.API_URL}/skills/learn`)
       ]);
       setTeachSkills(teachResponse.data);
       setLearnSkills(learnResponse.data);
@@ -37,11 +43,12 @@ const Dashboard = () => {
     if (!newTeachSkill.trim()) return;
 
     try {
-      const response = await axios.post(`${config.API_URL}/api/skills/teach`, { skill: newTeachSkill });
+      const response = await axios.post(`${config.API_URL}/skills/teach`, { skill: newTeachSkill });
       setTeachSkills([...teachSkills, response.data]);
       setNewTeachSkill('');
     } catch (error) {
       setError('Failed to add teach skill');
+      console.error('Add teach skill error:', error.response?.data || error.message);
     }
   };
 
@@ -50,29 +57,32 @@ const Dashboard = () => {
     if (!newLearnSkill.trim()) return;
 
     try {
-      const response = await axios.post(`${config.API_URL}/api/skills/learn`, { skill: newLearnSkill });
+      const response = await axios.post(`${config.API_URL}/skills/learn`, { skill: newLearnSkill });
       setLearnSkills([...learnSkills, response.data]);
       setNewLearnSkill('');
     } catch (error) {
       setError('Failed to add learn skill');
+      console.error('Add learn skill error:', error.response?.data || error.message);
     }
   };
 
   const removeTeachSkill = async (skillId) => {
     try {
-      await axios.delete(`${config.API_URL}/api/skills/teach/${skillId}`);
+      await axios.delete(`${config.API_URL}/skills/teach/${skillId}`);
       setTeachSkills(teachSkills.filter(skill => skill._id !== skillId));
     } catch (error) {
       setError('Failed to remove teach skill');
+      console.error('Remove teach skill error:', error.response?.data || error.message);
     }
   };
 
   const removeLearnSkill = async (skillId) => {
     try {
-      await axios.delete(`${config.API_URL}/api/skills/learn/${skillId}`);
+      await axios.delete(`${config.API_URL}/skills/learn/${skillId}`);
       setLearnSkills(learnSkills.filter(skill => skill._id !== skillId));
     } catch (error) {
       setError('Failed to remove learn skill');
+      console.error('Remove learn skill error:', error.response?.data || error.message);
     }
   };
 
